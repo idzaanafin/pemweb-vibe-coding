@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - MONGO_URI=mongodb://mongo:27017/peminjaman_ruangan
+      # Pass other env vars from .env file
+      - USER=${USER}
+      - PASSWORD=${PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - mongo
+    volumes:
+      - ./uploads:/app/uploads
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
